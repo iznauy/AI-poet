@@ -38,7 +38,7 @@ visdom
 
 执行：
 
-`python2 gen.py --start_words='xxxxx'  --background='xxxx，xxxx。'` 
+`python2 gen.py --start-words='xxxxx'  --background='xxxx，xxxx。'` 
 
 | 参数名（均为可选参数）   | 默认值                       | 含义                           |
 | ------------- | ------------------------- | ---------------------------- |
@@ -57,4 +57,3 @@ visdom
 参考 && 数据源：
 
 1. https://github.com/chenyuntc/pytorch-book
-2. https://github.com/karpathy/char-rnn
