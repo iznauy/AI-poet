@@ -1,5 +1,6 @@
 # coding=utf-8
 import argparse
+import visdom
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -24,7 +25,7 @@ parser.add_argument('--embedding-dim', type=int, default=128, metavar='N',
                     help='input embedding dim vocabulary for model (default: 128)')
 parser.add_argument('--hidden-dim', type=int, default=256, metavar='N',
                     help='input hidden dim for model (default: 256)')
-parser.add_argument('--print-per-batch', type=int, default=20, metavar='N')
+parser.add_argument('--print-per-batch', type=int, default=2, metavar='N')
 args = parser.parse_args()
 
 dataset = PoetryDataSet(args.data_path)
@@ -33,6 +34,7 @@ data_loader = DataLoader(dataset,
                         batch_size=args.batch_size,
                         shuffle=True)
 
+vis = visdom.Visdom(env=u'poem')
 
 model = PoetryNet(len(word2ix), args.embedding_dim, args.hidden_dim)
 optimizer = optim.Adam(model.parameters(), lr=args.lr)
@@ -40,7 +42,7 @@ criterion = nn.CrossEntropyLoss()
 
 
 for epoch in range(args.epochs):
-    for i, data in enumerate(data_loader, 1):
+    for i, data in enumerate(data_loader):
 
         data = data.long().transpose(1, 0).contiguous()
         optimizer.zero_grad()
@@ -52,6 +54,10 @@ for epoch in range(args.epochs):
 
         if i % args.print_per_batch == 0:
             print 'epoch {}, iteration {}, loss = {}'.format(epoch + 1, i, loss.data[0])
+            x = torch.Tensor([i])
+            y = loss.data
+            vis.line(X=x, Y=y, win='epoch{}'.format(epoch), update='append' if i > 0 else None,
+            	opts={'title': 'epoch{}'.format(epoch), 'xlabel': 'batch', 'ylabel': 'loss'})
 
     torch.save(model.state_dict(), args.model_path + "{}.pth".format(epoch))
 

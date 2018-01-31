@@ -13,6 +13,8 @@ numpy
 
 python2.7
 
+visdom
+
 ## 训练
 
 执行：
@@ -52,4 +54,7 @@ python2.7
 
 不支持cuda，需要使用GPU加速请自行改写代码
 
-参考 && 数据源：https://github.com/chenyuntc/pytorch-book
+参考 && 数据源：
+
+1. https://github.com/chenyuntc/pytorch-book
+2. https://github.com/karpathy/char-rnn
