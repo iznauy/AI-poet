@@ -17,6 +17,10 @@ visdom
 
 ## 训练
 
+训练前应当打开visdom：
+
+`python -m visdom.server`
+
 执行：
 
 `python2 train.py`
